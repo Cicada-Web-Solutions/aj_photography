@@ -492,7 +492,7 @@ img {
   height: min(68vh, 720px);
   margin: 0;
   opacity: 0;
-  transform: translate(-50%, -50%) translateY(66vh) rotateX(42deg) scale(0.82);
+  transform: translate(-50%, -50%) translateY(40vh) rotateX(42deg) scale(0.82);
   transform-origin: 50% 140%;
   transform-style: preserve-3d;
   will-change: transform, opacity, filter;
@@ -500,7 +500,7 @@ img {
 
 .wheel-card.is-active {
   opacity: 1;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -40%);
 }
 
 .wheel-card__media {

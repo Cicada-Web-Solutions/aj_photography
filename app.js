@@ -59,134 +59,18 @@
       .to(".hero__eyebrow", { opacity: 1, duration: 0.65 }, "-=0.9")
       .fromTo(".hero__orb", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2 }, "-=0.9")
       .to(".hero-wheel", { opacity: 1, duration: 1 }, "-=1.05")
-      .from(".wheel-card.is-active", { yPercent: 22, rotateX: 18, scale: 0.88, duration: 1.25 }, "-=1.05")
       .to([".hero__footer", ".hero__scroll"], { opacity: 1, duration: 0.8 }, "-=0.55")
       .set(".preloader", { display: "none" });
   }
 
   function heroStory() {
-    const cards = qsa(".wheel-card");
-    const count = qs(".story-count b");
-    const progressLine = qs(".story-count i");
-
-    // Initialize 3D deck stacking
-    gsap.set(cards, {
-      xPercent: -50,
-      yPercent: -50,
-      transformOrigin: "50% 50%",
-      z: (i) => -i * 60,
-      scale: (i) => 1 - i * 0.06,
-      yPercent: (i) => -50 + i * 3,
-      opacity: 1,
-      zIndex: (i) => cards.length - i,
-      pointerEvents: (i) => (i === 0 ? "auto" : "none")
-    });
-
-    const story = gsap.timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.15,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const index = Math.min(cards.length - 1, Math.round(self.progress * (cards.length - 1)));
-          count.textContent = String(index + 1).padStart(2, "0");
-          progressLine.style.setProperty("--hero-progress", `${(index + 1) * 25}%`);
-
-          cards.forEach((card, idx) => {
-            if (idx === index) {
-              card.classList.add("is-active");
-              gsap.set(card, { pointerEvents: "auto" });
-            } else {
-              card.classList.remove("is-active");
-              gsap.set(card, { pointerEvents: "none" });
-            }
-          });
-        }
-      }
-    });
-
-    // Animate each card transitioning
-    for (let i = 0; i < cards.length - 1; i++) {
-      const position = i;
-      const current = cards[i];
-
-      story.to(current, {
-        xPercent: -155,
-        yPercent: -70,
-        rotation: -25,
-        scale: 0.82,
-        opacity: 0,
-        duration: 0.8
-      }, position);
-
-      // Shift all remaining cards forward
-      for (let j = i + 1; j < cards.length; j++) {
-        const card = cards[j];
-        const localIdx = j - (i + 1); // 0 for next card, 1 for card after, etc.
-        story.to(card, {
-          z: -localIdx * 60,
-          scale: 1 - localIdx * 0.06,
-          yPercent: -50 + localIdx * 3,
-          opacity: 1,
-          duration: 0.8
-        }, position);
-      }
-    }
-
-    story
-      .to(".hero__orb", { rotation: 55, scale: 1.12, xPercent: 8, duration: cards.length - 1 }, 0)
-      .to(".hero__title", { yPercent: -7, duration: cards.length - 1 }, 0)
-      .to(".hero__scroll", { opacity: 0, duration: 0.3 }, 0.1);
-
-    // 3D Tilt interaction on active card based on mouse move in hero wheel
-    const wheelContainer = qs(".hero-wheel");
-    if (wheelContainer && !window.matchMedia("(pointer: coarse)").matches) {
-      wheelContainer.addEventListener("mousemove", (e) => {
-        const activeCard = qs(".wheel-card.is-active");
-        if (!activeCard) return;
-        const rect = wheelContainer.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left - rect.width / 2;
-        const mouseY = e.clientY - rect.top - rect.height / 2;
-
-        // Tilt rotation and translation offsets
-        const tiltX = (mouseY / rect.height) * 20; 
-        const tiltY = -(mouseX / rect.width) * 20; 
-        const dx = (mouseX / rect.width) * 20;
-        const dy = (mouseY / rect.height) * 15;
-
-        gsap.to(activeCard, {
-          rotateX: tiltX,
-          rotateY: tiltY,
-          xPercent: -50,
-          x: dx,
-          y: dy,
-          duration: 0.5,
-          ease: "power3.out",
-          overwrite: "auto"
-        });
-      });
-
-      wheelContainer.addEventListener("mouseleave", () => {
-        const activeCard = qs(".wheel-card.is-active");
-        if (!activeCard) return;
-        gsap.to(activeCard, {
-          rotateX: 0,
-          rotateY: 0,
-          x: 0,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          overwrite: "auto"
-        });
-      });
-    }
+    gsap.set(".wheel-card", { opacity: 1 });
   }
 
   function textReveals() {
-    gsap.to(".about-copy .word", {
+    gsap.fromTo(".about-copy .word", {
+      color: "#777168"
+    }, {
       color: "#f5f1e9",
       stagger: 0.075,
       ease: "none",
@@ -449,6 +333,17 @@
       });
     });
 
+    ScrollTrigger.create({
+      trigger: ".cinematic",
+      start: "top top",
+      end: () => `+=${Math.max(1, qs(".cinematic__track").scrollWidth - window.innerWidth)}`,
+      onEnter: () => gsap.to(nav, { autoAlpha: 0, y: -25, duration: 0.25, overwrite: "auto" }),
+      onEnterBack: () => gsap.to(nav, { autoAlpha: 0, y: -25, duration: 0.25, overwrite: "auto" }),
+      onLeave: () => gsap.to(nav, { autoAlpha: 1, y: 0, duration: 0.35, overwrite: "auto" }),
+      onLeaveBack: () => gsap.to(nav, { autoAlpha: 1, y: 0, duration: 0.35, overwrite: "auto" }),
+      invalidateOnRefresh: true
+    });
+
     menuButton.addEventListener("click", () => {
       const open = document.body.classList.toggle("menu-open");
       menuButton.setAttribute("aria-expanded", String(open));
@@ -550,8 +445,8 @@
       return;
     }
 
-    introAnimation();
     heroStory();
+    introAnimation();
     textReveals();
     serviceMotion();
     galleryMotion();

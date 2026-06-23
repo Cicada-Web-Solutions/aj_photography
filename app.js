@@ -59,26 +59,28 @@
       .to(".hero__eyebrow", { opacity: 1, duration: 0.65 }, "-=0.9")
       .fromTo(".hero__orb", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2 }, "-=0.9")
       .to(".hero-wheel", { opacity: 1, duration: 1 }, "-=1.05")
-      .from(".wheel-card.is-active", { yPercent: 22, rotateX: 18, scale: 0.88, filter: "blur(10px)", duration: 1.25 }, "-=1.05")
+      .from(".wheel-card.is-active", { yPercent: 22, rotateX: 18, scale: 0.88, duration: 1.25 }, "-=1.05")
       .to([".hero__footer", ".hero__scroll"], { opacity: 1, duration: 0.8 }, "-=0.55")
       .set(".preloader", { display: "none" });
   }
 
   function heroStory() {
     const cards = qsa(".wheel-card");
-    const names = qsa(".story-names span");
     const count = qs(".story-count b");
     const progressLine = qs(".story-count i");
 
-    gsap.set(cards, { xPercent: -50, yPercent: -50, transformOrigin: "50% 140%" });
-    gsap.set(cards.slice(1), {
-      yPercent: 42,
-      rotationX: 38,
-      scale: 0.82,
-      opacity: 0,
-      filter: "blur(12px)"
+    // Initialize 3D deck stacking
+    gsap.set(cards, {
+      xPercent: -50,
+      yPercent: -50,
+      transformOrigin: "50% 50%",
+      z: (i) => -i * 60,
+      scale: (i) => 1 - i * 0.06,
+      yPercent: (i) => -50 + i * 3,
+      opacity: 1,
+      zIndex: (i) => cards.length - i,
+      pointerEvents: (i) => (i === 0 ? "auto" : "none")
     });
-    gsap.set(names.slice(1), { yPercent: 120 });
 
     const story = gsap.timeline({
       defaults: { ease: "none" },
@@ -92,43 +94,95 @@
           const index = Math.min(cards.length - 1, Math.round(self.progress * (cards.length - 1)));
           count.textContent = String(index + 1).padStart(2, "0");
           progressLine.style.setProperty("--hero-progress", `${(index + 1) * 25}%`);
+
+          cards.forEach((card, idx) => {
+            if (idx === index) {
+              card.classList.add("is-active");
+              gsap.set(card, { pointerEvents: "auto" });
+            } else {
+              card.classList.remove("is-active");
+              gsap.set(card, { pointerEvents: "none" });
+            }
+          });
         }
       }
     });
 
-    cards.slice(1).forEach((card, index) => {
-      const current = cards[index];
-      const currentName = names[index];
-      const nextName = names[index + 1];
-      const position = index + 0.12;
+    // Animate each card transitioning
+    for (let i = 0; i < cards.length - 1; i++) {
+      const position = i;
+      const current = cards[i];
 
-      story
-        .to(current, {
-          yPercent: 78,
-          rotationX: -36,
-          scale: 0.82,
-          opacity: 0,
-          filter: "blur(13px)",
-          duration: 0.78
-        }, position)
-        .to(qs("img", current), { scale: 1.14, duration: 0.78 }, position)
-        .to(card, {
-          yPercent: -50,
-          rotationX: 0,
-          scale: 1,
+      story.to(current, {
+        xPercent: -155,
+        yPercent: -70,
+        rotation: -25,
+        scale: 0.82,
+        opacity: 0,
+        duration: 0.8
+      }, position);
+
+      // Shift all remaining cards forward
+      for (let j = i + 1; j < cards.length; j++) {
+        const card = cards[j];
+        const localIdx = j - (i + 1); // 0 for next card, 1 for card after, etc.
+        story.to(card, {
+          z: -localIdx * 60,
+          scale: 1 - localIdx * 0.06,
+          yPercent: -50 + localIdx * 3,
           opacity: 1,
-          filter: "blur(0px)",
-          duration: 0.78
-        }, position)
-        .to(qs("img", card), { scale: 1.04, duration: 0.78 }, position)
-        .to(currentName, { yPercent: -120, duration: 0.38 }, position + 0.13)
-        .to(nextName, { yPercent: 0, duration: 0.38 }, position + 0.22);
-    });
+          duration: 0.8
+        }, position);
+      }
+    }
 
     story
-      .to(".hero__orb", { rotation: 55, scale: 1.12, xPercent: 8, duration: 3 }, 0)
-      .to(".hero__title", { yPercent: -7, duration: 3 }, 0)
+      .to(".hero__orb", { rotation: 55, scale: 1.12, xPercent: 8, duration: cards.length - 1 }, 0)
+      .to(".hero__title", { yPercent: -7, duration: cards.length - 1 }, 0)
       .to(".hero__scroll", { opacity: 0, duration: 0.3 }, 0.1);
+
+    // 3D Tilt interaction on active card based on mouse move in hero wheel
+    const wheelContainer = qs(".hero-wheel");
+    if (wheelContainer && !window.matchMedia("(pointer: coarse)").matches) {
+      wheelContainer.addEventListener("mousemove", (e) => {
+        const activeCard = qs(".wheel-card.is-active");
+        if (!activeCard) return;
+        const rect = wheelContainer.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left - rect.width / 2;
+        const mouseY = e.clientY - rect.top - rect.height / 2;
+
+        // Tilt rotation and translation offsets
+        const tiltX = (mouseY / rect.height) * 20; 
+        const tiltY = -(mouseX / rect.width) * 20; 
+        const dx = (mouseX / rect.width) * 20;
+        const dy = (mouseY / rect.height) * 15;
+
+        gsap.to(activeCard, {
+          rotateX: tiltX,
+          rotateY: tiltY,
+          xPercent: -50,
+          x: dx,
+          y: dy,
+          duration: 0.5,
+          ease: "power3.out",
+          overwrite: "auto"
+        });
+      });
+
+      wheelContainer.addEventListener("mouseleave", () => {
+        const activeCard = qs(".wheel-card.is-active");
+        if (!activeCard) return;
+        gsap.to(activeCard, {
+          rotateX: 0,
+          rotateY: 0,
+          x: 0,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          overwrite: "auto"
+        });
+      });
+    }
   }
 
   function textReveals() {
@@ -163,6 +217,10 @@
 
   function serviceMotion() {
     const cards = qsa(".service-card");
+    const hoverMedia = qs(".services__hover-media");
+    const hoverImg = qs("img", hoverMedia);
+    const cursor = qs(".cursor");
+
     gsap.from(cards, {
       y: 75,
       opacity: 0,
@@ -175,18 +233,37 @@
       }
     });
 
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    gsap.set(hoverMedia, { xPercent: -50, yPercent: -50 });
+    const xTo = gsap.quickTo(hoverMedia, "x", { duration: 0.45, ease: "power3.out" });
+    const yTo = gsap.quickTo(hoverMedia, "y", { duration: 0.45, ease: "power3.out" });
+
     cards.forEach((card) => {
-      const image = qs("img", card);
-      const xTo = gsap.quickTo(image, "xPercent", { duration: 0.7, ease: "power3.out" });
-      const yTo = gsap.quickTo(image, "yPercent", { duration: 0.7, ease: "power3.out" });
-      card.addEventListener("mousemove", (event) => {
-        const rect = card.getBoundingClientRect();
-        xTo(((event.clientX - rect.left) / rect.width - 0.5) * 4);
-        yTo(((event.clientY - rect.top) / rect.height - 0.5) * 4);
+      const originalImg = qs("img", card);
+
+      card.addEventListener("mouseenter", () => {
+        if (originalImg && hoverImg) {
+          hoverImg.src = originalImg.getAttribute("src") || "";
+          hoverImg.alt = originalImg.getAttribute("alt") || "";
+        }
+        gsap.to(hoverMedia, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out", overwrite: "auto" });
+        if (cursor) {
+          cursor.classList.add("is-expanded");
+          qs("span", cursor).textContent = "Explore";
+        }
       });
+
+      card.addEventListener("mousemove", (event) => {
+        xTo(event.clientX);
+        yTo(event.clientY);
+      });
+
       card.addEventListener("mouseleave", () => {
-        xTo(0);
-        yTo(0);
+        gsap.to(hoverMedia, { opacity: 0, scale: 0.85, duration: 0.3, ease: "power3.out", overwrite: "auto" });
+        if (cursor) {
+          cursor.classList.remove("is-expanded");
+        }
       });
     });
   }
@@ -352,16 +429,7 @@
   }
 
   function footerMotion() {
-    gsap.fromTo(".footer__wordmark", { xPercent: 7 }, {
-      xPercent: -11,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".footer",
-        start: "top bottom",
-        end: "bottom bottom",
-        scrub: true
-      }
-    });
+    // Wordmark AJ Photography remains static as requested.
   }
 
   function navigation() {
@@ -413,21 +481,36 @@
 
     const cursor = qs(".cursor");
     const cursorText = qs("span", cursor);
-    const xTo = gsap.quickTo(cursor, "x", { duration: 0.28, ease: "power3.out" });
-    const yTo = gsap.quickTo(cursor, "y", { duration: 0.28, ease: "power3.out" });
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.22, ease: "power3.out" });
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.22, ease: "power3.out" });
 
     window.addEventListener("mousemove", (event) => {
       xTo(event.clientX);
       yTo(event.clientY);
     });
 
+    // Expand cursor with label for interactive gallery elements
     qsa("[data-cursor]").forEach((element) => {
+      if (element.classList.contains("service-card")) return;
+
       element.addEventListener("mouseenter", () => {
-        cursorText.textContent = element.dataset.cursor;
-        gsap.to(cursor, { scale: 1, duration: 0.35, ease: "back.out(2)" });
+        cursorText.textContent = element.dataset.cursor || "";
+        cursor.classList.add("is-expanded");
       });
       element.addEventListener("mouseleave", () => {
-        gsap.to(cursor, { scale: 0, duration: 0.25 });
+        cursor.classList.remove("is-expanded");
+      });
+    });
+
+    // Morph cursor on standard links, actions and inputs
+    qsa("a, button, select, input, textarea, .nav__cta").forEach((element) => {
+      if (element.hasAttribute("data-cursor") || element.closest("[data-cursor]")) return;
+
+      element.addEventListener("mouseenter", () => {
+        cursor.classList.add("is-hovered");
+      });
+      element.addEventListener("mouseleave", () => {
+        cursor.classList.remove("is-hovered");
       });
     });
 

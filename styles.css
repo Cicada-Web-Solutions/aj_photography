@@ -537,27 +537,6 @@ img {
   justify-content: space-between;
 }
 
-.story-names {
-  position: relative;
-  width: 190px;
-  height: 29px;
-  overflow: hidden;
-}
-
-.story-names span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-family: var(--serif);
-  font-size: 22px;
-  white-space: nowrap;
-  transform: translateY(120%);
-}
-
-.story-names span:first-child {
-  transform: translateY(0);
-}
-
 .story-count {
   display: flex;
   align-items: center;

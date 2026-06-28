@@ -39,28 +39,48 @@
     qsa("[data-split-title], .split-heading").forEach((element) => {
       new SplitType(element, { types: "lines, words", lineClass: "line" });
     });
-    new SplitType(".about-copy", { types: "words" });
+    if (qs(".about-copy")) {
+      new SplitType(".about-copy", { types: "words" });
+    }
   }
 
   function introAnimation() {
-    const titleWords = qsa(".hero__title .word");
-    gsap.set(titleWords, { yPercent: 115, rotate: 2 });
-    gsap.set(".nav", { y: -100, opacity: 0 });
-    gsap.set([".hero__eyebrow", ".hero__footer", ".hero-wheel", ".hero__scroll"], { opacity: 0 });
+    const preloader = qs(".preloader");
+    const title = qs(".hero__title");
+    const titleWords = title ? qsa(".word", title) : [];
+    const nav = qs(".nav");
+
+    if (title && titleWords.length) {
+      gsap.set(titleWords, { yPercent: 115, rotate: 2 });
+    }
+    if (nav) {
+      gsap.set(nav, { y: -100, opacity: 0 });
+    }
+    gsap.set(qsa(".hero__eyebrow, .hero__footer, .hero-wheel, .hero__scroll"), { opacity: 0 });
 
     const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+    if (preloader) {
+      timeline
+        .to(".preloader__line i", { xPercent: 0, duration: 0.75, ease: "power2.inOut" })
+        .to(".preloader__monogram", { y: -15, opacity: 0, duration: 0.45 }, "+=0.12")
+        .to(".preloader p", { opacity: 0, duration: 0.3 }, "<")
+        .to(".preloader", { yPercent: -100, duration: 1.05, ease: "power4.inOut" }, "-=0.15");
+    }
+    if (nav) {
+      timeline.to(nav, { y: 0, opacity: 1, duration: 0.85 }, preloader ? "-=0.45" : undefined);
+    }
+    if (title && titleWords.length) {
+      timeline.to(titleWords, { yPercent: 0, rotate: 0, duration: 1.15, stagger: 0.045 }, "-=0.62");
+    }
     timeline
-      .to(".preloader__line i", { xPercent: 0, duration: 0.75, ease: "power2.inOut" })
-      .to(".preloader__monogram", { y: -15, opacity: 0, duration: 0.45 }, "+=0.12")
-      .to(".preloader p", { opacity: 0, duration: 0.3 }, "<")
-      .to(".preloader", { yPercent: -100, duration: 1.05, ease: "power4.inOut" }, "-=0.15")
-      .to(".nav", { y: 0, opacity: 1, duration: 0.85 }, "-=0.45")
-      .to(titleWords, { yPercent: 0, rotate: 0, duration: 1.15, stagger: 0.045 }, "-=0.62")
-      .to(".hero__eyebrow", { opacity: 1, duration: 0.65 }, "-=0.9")
-      .fromTo(".hero__orb", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2 }, "-=0.9")
-      .to(".hero-wheel", { opacity: 1, duration: 1 }, "-=1.05")
-      .to([".hero__footer", ".hero__scroll"], { opacity: 1, duration: 0.8 }, "-=0.55")
-      .set(".preloader", { display: "none" });
+      .to(qsa(".hero__eyebrow"), { opacity: 1, duration: 0.65 }, "-=0.9")
+      .fromTo(qsa(".hero__orb"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2 }, "-=0.9")
+      .to(qsa(".hero-wheel"), { opacity: 1, duration: 1 }, "-=1.05")
+      .to(qsa(".hero__footer, .hero__scroll"), { opacity: 1, duration: 0.8 }, "-=0.55");
+      
+    if (preloader) {
+      timeline.set(preloader, { display: "none" });
+    }
   }
 
   function heroStory() {
@@ -68,22 +88,25 @@
   }
 
   function textReveals() {
-    gsap.fromTo(".about-copy .word", {
-      color: "#777168"
-    }, {
-      color: "#f5f1e9",
-      stagger: 0.075,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".about__statement",
-        start: "top 72%",
-        end: "bottom 42%",
-        scrub: true
-      }
-    });
+    if (qs(".about__statement")) {
+      gsap.fromTo(".about-copy .word", {
+        color: "#777168"
+      }, {
+        color: "#f5f1e9",
+        stagger: 0.075,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".about__statement",
+          start: "top 72%",
+          end: "bottom 42%",
+          scrub: true
+        }
+      });
+    }
 
     qsa(".split-heading").forEach((heading) => {
       const words = qsa(".word", heading);
+      if (!words.length) return;
       gsap.from(words, {
         yPercent: 115,
         rotate: 1.5,
@@ -101,8 +124,9 @@
 
   function serviceMotion() {
     const cards = qsa(".service-card");
+    if (!cards.length) return;
     const hoverMedia = qs(".services__hover-media");
-    const hoverImg = qs("img", hoverMedia);
+    const hoverImg = hoverMedia ? qs("img", hoverMedia) : null;
     const cursor = qs(".cursor");
 
     gsap.from(cards, {
@@ -153,7 +177,7 @@
   }
 
   function galleryMotion() {
-    qsa(".gallery-item").forEach((item) => {
+    qsa(".portfolio .gallery-item").forEach((item) => {
       const mask = qs(".gallery-item__mask", item);
       const image = qs("img", item);
       const caption = qs("figcaption", item);
@@ -284,7 +308,9 @@
   }
 
   function testimonialMotion() {
+    const stage = qs(".testimonial-stage");
     const cards = qsa(".quote-card");
+    if (!stage || !cards.length) return;
     gsap.from(cards, {
       y: 130,
       opacity: 0,
@@ -320,6 +346,7 @@
     const nav = qs(".nav");
     const menuButton = qs(".nav__menu");
     const menu = qs(".mobile-menu");
+    if (!nav || !menuButton || !menu) return;
 
     qsa(".dark-section").forEach((section) => {
       ScrollTrigger.create({
@@ -333,16 +360,19 @@
       });
     });
 
-    ScrollTrigger.create({
-      trigger: ".cinematic",
-      start: "top top",
-      end: () => `+=${Math.max(1, qs(".cinematic__track").scrollWidth - window.innerWidth)}`,
-      onEnter: () => gsap.to(nav, { autoAlpha: 0, y: -25, duration: 0.25, overwrite: "auto" }),
-      onEnterBack: () => gsap.to(nav, { autoAlpha: 0, y: -25, duration: 0.25, overwrite: "auto" }),
-      onLeave: () => gsap.to(nav, { autoAlpha: 1, y: 0, duration: 0.35, overwrite: "auto" }),
-      onLeaveBack: () => gsap.to(nav, { autoAlpha: 1, y: 0, duration: 0.35, overwrite: "auto" }),
-      invalidateOnRefresh: true
-    });
+    const cinematicTrack = qs(".cinematic__track");
+    if (qs(".cinematic") && cinematicTrack) {
+      ScrollTrigger.create({
+        trigger: ".cinematic",
+        start: "top top",
+        end: () => `+=${Math.max(1, cinematicTrack.scrollWidth - window.innerWidth)}`,
+        onEnter: () => gsap.to(nav, { autoAlpha: 0, y: -25, duration: 0.25, overwrite: "auto" }),
+        onEnterBack: () => gsap.to(nav, { autoAlpha: 0, y: -25, duration: 0.25, overwrite: "auto" }),
+        onLeave: () => gsap.to(nav, { autoAlpha: 1, y: 0, duration: 0.35, overwrite: "auto" }),
+        onLeaveBack: () => gsap.to(nav, { autoAlpha: 1, y: 0, duration: 0.35, overwrite: "auto" }),
+        invalidateOnRefresh: true
+      });
+    }
 
     menuButton.addEventListener("click", () => {
       const open = document.body.classList.toggle("menu-open");
@@ -428,6 +458,7 @@
   function formInteraction() {
     const form = qs(".contact-form");
     const success = qs(".form-success");
+    if (!form || !success) return;
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       gsap.to(success, { height: "auto", opacity: 1, marginTop: 16, duration: 0.5 });

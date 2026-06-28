@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f2ede4">
+  <meta name="description" content="AJ Photography Gallery — A curated archive of wedding stories, couples, bridal portraits, and event photography.">
+  <title>Gallery — AJ Photoarts</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%2311110f'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='32' fill='%23f2ede4' font-family='serif'%3EAJ%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+  <link rel="preload" href="./fonts/Poppins-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span>View</span></div>
+
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__monogram">AJ</div>
+    <div class="preloader__line"><i></i></div>
+    <p>Preserving the feeling</p>
+  </div>
+
+  <nav class="nav" aria-label="Main navigation">
+    <a class="nav__brand" href="index.html" aria-label="AJ Photography home">
+      <span class="nav__mark">AJ</span>
+      <span class="nav__name">Photoarts</span>
+    </a>
+    <div class="nav__links">
+      <a href="gallery.html" class="active">Gallery</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#portfolio">Work</a>
+    </div>
+    <a class="nav__cta" href="index.html#contact">Enquire <span>↗</span></a>
+    <button class="nav__menu" type="button" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu__links">
+      <a href="gallery.html">Gallery</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#portfolio">Portfolio</a>
+      <a href="index.html#contact">Enquire</a>
+    </div>
+    <p>Chennai · Available worldwide</p>
+  </div>
+
+  <main>
+    <section class="gallery-hero section-pad">
+      <div class="gallery-hero__content">
+        <p class="eyebrow"><span></span> Archive</p>
+        <h1 class="gallery-title">Stories in Frames</h1>
+        <p class="gallery-hero__desc">A curated archive of emotions, rituals, and silent glances. Filter by chapters to explore our collection.</p>
+      </div>
+
+      <div class="filter-controls" style="opacity: 0;">
+        <button class="filter-btn active" data-filter="all"><span>All Stories</span></button>
+        <button class="filter-btn" data-filter="wedding"><span>Weddings</span></button>
+        <button class="filter-btn" data-filter="portrait"><span>Portraits</span></button>
+        <button class="filter-btn" data-filter="couple"><span>Couples</span></button>
+        <button class="filter-btn" data-filter="event"><span>Events</span></button>
+      </div>
+    </section>
+
+    <section class="portfolio-gallery section-pad" style="padding-bottom: 120px;">
+      <div class="gallery" id="gallery-grid">
+        <!-- 21 photo items -->
+        <figure class="gallery-item gallery-item--wide" data-category="wedding" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p20.webp" alt="Garden wedding ritual in green" loading="lazy"></div>
+          <figcaption><span>Garden Ritual</span><i>Wedding Story</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--portrait" data-category="portrait" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p13.webp" alt="Model silhouette against blue twilight" loading="lazy"></div>
+          <figcaption><span>Blue Hour</span><i>Editorial Study</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--small" data-category="couple" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p8.jpg" alt="Couple walking in narrow sunlit street" loading="lazy"></div>
+          <figcaption><span>Old Street</span><i>Couple Story</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--tall" data-category="portrait" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p14.webp" alt="Bride in elegant gold sari" loading="lazy"></div>
+          <figcaption><span>Gold Morning</span><i>Bridal Portrait</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--landscape" data-category="wedding" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p21.webp" alt="Green reception decor and laughter" loading="lazy"></div>
+          <figcaption><span>Green Notes</span><i>Reception Moments</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--portrait-2" data-category="portrait" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p2.jpg" alt="Sunlit outdoor portrait" loading="lazy"></div>
+          <figcaption><span>Wild Light</span><i>Portrait Story</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--portrait" data-category="couple" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p9.jpg" alt="Couple portrait in warm evening light" loading="lazy"></div>
+          <figcaption><span>Evening Walk</span><i>Couple Story</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--wide" data-category="wedding" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p15.webp" alt="Bride preparing in front of mirror" loading="lazy"></div>
+          <figcaption><span>Quiet Room</span><i>Bridal Preparation</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--landscape" data-category="couple" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p10.jpg" alt="Laughing couple candid" loading="lazy"></div>
+          <figcaption><span>The Laugh</span><i>Couple Portrait</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--tall" data-category="wedding" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p11.jpg" alt="Groom looking at bride during ceremony" loading="lazy"></div>
+          <figcaption><span>The Glance</span><i>Wedding Ceremony</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--small" data-category="portrait" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p5.webp" alt="Details of veil and gold jewelry" loading="lazy"></div>
+          <figcaption><span>Golden Veil</span><i>Bridal Detail</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--landscape" data-category="event" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p12.webp" alt="Traditional wedding musicians" loading="lazy"></div>
+          <figcaption><span>The Festivity</span><i>Event Coverage</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--portrait" data-category="wedding" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p6.webp" alt="Elegant portrait of bride and groom" loading="lazy"></div>
+          <figcaption><span>Shadow & Light</span><i>Wedding Portrait</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--wide" data-category="wedding" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p16.webp" alt="Outdoor reception lawn table setup" loading="lazy"></div>
+          <figcaption><span>Lawn Dinner</span><i>Reception Toast</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--tall" data-category="portrait" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p18.webp" alt="Portrait below blue skies" loading="lazy"></div>
+          <figcaption><span>Skyward</span><i>Outdoor Portrait</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--portrait-2" data-category="couple" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p17.webp" alt="Smiling couple close-up" loading="lazy"></div>
+          <figcaption><span>Sunlit Love</span><i>Engagement Story</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--portrait" data-category="couple" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p3.jpg" alt="Couple walking in urban setting" loading="lazy"></div>
+          <figcaption><span>Urban Romance</span><i>Couple Portrait</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--landscape" data-category="portrait" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p4.webp" alt="Editorial studio model shoot" loading="lazy"></div>
+          <figcaption><span>Studio Mood</span><i>Editorial Portrait</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--tall" data-category="wedding" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p1.jpg" alt="Bride and groom warm hug" loading="lazy"></div>
+          <figcaption><span>Warm Embrace</span><i>Wedding Story</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--portrait" data-category="event" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p7.webp" alt="Colorful wedding sangeet dance" loading="lazy"></div>
+          <figcaption><span>Sangeet Night</span><i>Event Story</i></figcaption>
+        </figure>
+        <figure class="gallery-item gallery-item--landscape" data-category="event" data-cursor="View">
+          <div class="gallery-item__mask"><img src="./assets/p19.webp" alt="Joyful wedding guests dancing" loading="lazy"></div>
+          <figcaption><span>Celebration</span><i>Reception Night</i></figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+    <button class="lightbox__close" aria-label="Close gallery viewer">✕</button>
+    <button class="lightbox__prev" aria-label="Previous image">←</button>
+    <div class="lightbox__content">
+      <img src="" alt="" class="lightbox__img">
+      <div class="lightbox__caption">
+        <span class="lightbox__title">Image Title</span>
+        <span class="lightbox__category">Wedding Story</span>
+      </div>
+    </div>
+    <button class="lightbox__next" aria-label="Next image">→</button>
+  </div>
+
+  <footer class="footer">
+    <div class="footer__top section-pad">
+      <p>Wedding stories, honestly told.</p>
+      <div><a href="index.html">Back to home ↑</a></div>
+    </div>
+    <div class="footer__wordmark">AJ Photoarts</div>
+    <div class="footer__bottom section-pad"><span>© 2026 AJ Photoarts</span><span>Trichy · India · Worldwide</span><span>Made by CICADA</span></div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script src="./app.js"></script>
+
+  <script>
+    // Run after window is fully loaded to ensure accurate image heights and layout calculations
+    window.addEventListener("load", () => {
+      const filterBtns = document.querySelectorAll(".filter-btn");
+      const galleryItems = document.querySelectorAll(".gallery-item");
+
+      // Set initial states for clean page entrance
+      gsap.set(".gallery-title", { y: 25 });
+      gsap.set(".gallery-hero__desc", { y: 15 });
+      gsap.set(".filter-controls", { y: 15 });
+      gsap.set(galleryItems, { opacity: 0, y: 35 });
+
+      // Refresh ScrollTrigger to align coordinates
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+
+      // Premium, staggered page intro animation timeline
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.to(".gallery-title", { opacity: 1, y: 0, duration: 0.85 })
+        .to(".gallery-hero__desc", { opacity: 1, y: 0, duration: 0.75 }, "-=0.55")
+        .to(".filter-controls", { opacity: 1, y: 0, duration: 0.75 }, "-=0.55")
+        .to(galleryItems, { opacity: 1, y: 0, duration: 0.8, stagger: 0.045 }, "-=0.55");
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          // Remove active class from all buttons
+          filterBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const filterValue = btn.getAttribute("data-filter");
+
+          // Animate gallery items based on selection
+          galleryItems.forEach(item => {
+            const category = item.getAttribute("data-category");
+            if (filterValue === "all" || category === filterValue) {
+              // Show matching item
+              gsap.killTweensOf(item);
+              item.style.display = "inline-block";
+              gsap.fromTo(item, 
+                { opacity: 0, scale: 0.9 },
+                { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }
+              );
+            } else {
+              // Hide non-matching item
+              gsap.killTweensOf(item);
+              gsap.to(item, {
+                opacity: 0,
+                scale: 0.9,
+                duration: 0.4,
+                ease: "power3.out",
+                onComplete: () => {
+                  item.style.display = "none";
+                }
+              });
+            }
+          });
+
+          // Recalculate scrolltrigger layout after filtering animations
+          setTimeout(() => {
+            if (window.ScrollTrigger) ScrollTrigger.refresh();
+          }, 500);
+        });
+      });
+
+      // Lightbox Logic
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = lightbox.querySelector(".lightbox__img");
+      const lightboxTitle = lightbox.querySelector(".lightbox__title");
+      const lightboxCategory = lightbox.querySelector(".lightbox__category");
+      const closeBtn = lightbox.querySelector(".lightbox__close");
+      const prevBtn = lightbox.querySelector(".lightbox__prev");
+      const nextBtn = lightbox.querySelector(".lightbox__next");
+
+      let currentItems = [];
+      let currentIndex = -1;
+
+      // Update current items list (only visible items)
+      function updateVisibleItems() {
+        currentItems = Array.from(galleryItems).filter(item => item.style.display !== "none");
+      }
+
+      function openLightbox(index) {
+        updateVisibleItems();
+        currentIndex = index;
+        const currentItem = currentItems[currentIndex];
+        if (!currentItem) return;
+
+        const img = currentItem.querySelector("img");
+        const title = currentItem.querySelector("figcaption span").textContent;
+        const category = currentItem.querySelector("figcaption i").textContent;
+
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxTitle.textContent = title;
+        lightboxCategory.textContent = category;
+
+        lightbox.classList.add("is-active");
+        setTimeout(() => {
+          lightboxImg.classList.add("is-visible");
+        }, 50);
+
+        // Disable scrolling on body
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        lightboxImg.classList.remove("is-visible");
+        lightbox.classList.remove("is-active");
+        // Re-enable scrolling
+        document.body.style.overflow = "";
+      }
+
+      function navigateLightbox(direction) {
+        gsap.to(lightboxImg, {
+          opacity: 0,
+          x: direction === 1 ? -30 : 30,
+          duration: 0.25,
+          ease: "power2.inOut",
+          onComplete: () => {
+            currentIndex = (currentIndex + direction + currentItems.length) % currentItems.length;
+            const currentItem = currentItems[currentIndex];
+            if (!currentItem) return;
+
+            const img = currentItem.querySelector("img");
+            const title = currentItem.querySelector("figcaption span").textContent;
+            const category = currentItem.querySelector("figcaption i").textContent;
+
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightboxTitle.textContent = title;
+            lightboxCategory.textContent = category;
+
+            gsap.fromTo(lightboxImg, 
+              { opacity: 0, x: direction === 1 ? 30 : -30 },
+              { opacity: 1, x: 0, duration: 0.35, ease: "power3.out" }
+            );
+          }
+        });
+      }
+
+      // Add click listeners to gallery items
+      galleryItems.forEach(item => {
+        item.addEventListener("click", () => {
+          updateVisibleItems();
+          const visibleIndex = currentItems.indexOf(item);
+          if (visibleIndex !== -1) {
+            openLightbox(visibleIndex);
+          }
+        });
+      });
+
+      // Lightbox control event listeners
+      closeBtn.addEventListener("click", closeLightbox);
+      prevBtn.addEventListener("click", () => navigateLightbox(-1));
+      nextBtn.addEventListener("click", () => navigateLightbox(1));
+
+      // Close on backdrop click
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox || e.target === lightbox.querySelector(".lightbox__content")) {
+          closeLightbox();
+        }
+      });
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (!lightbox.classList.contains("is-active")) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") navigateLightbox(-1);
+        if (e.key === "ArrowRight") navigateLightbox(1);
+      });
+    });
+  </script>
+</body>
+</html>

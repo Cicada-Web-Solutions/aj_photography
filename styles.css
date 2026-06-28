@@ -1580,13 +1580,13 @@ img {
   text-align: center;
   margin: 10vw 0 5vw;
   padding: 0 2vw;
+
   font-family: var(--serif);
-  font-size: 17vw;
-  line-height: 0.68;
+  font-size: clamp(4rem, 14vw, 13rem);
+  line-height: 0.75;
   letter-spacing: 0;
   white-space: nowrap;
 }
-
 .footer__bottom {
   padding-top: 25px;
   padding-bottom: 28px;
